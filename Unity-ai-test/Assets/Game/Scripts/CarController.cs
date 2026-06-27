@@ -21,6 +21,10 @@ public class CarController : MonoBehaviour
     public PlayerController Driver { get; private set; }
     public bool IsOccupied => Driver != null;
 
+    /// <summary>When true and unoccupied, an external driver (TrafficAI) owns the
+    /// rigidbody, so the internal arcade physics step is skipped to avoid fighting it.</summary>
+    public bool aiControlled;
+
     Rigidbody _rb;
     float _throttle, _steer;
     bool _handbrake;
@@ -59,10 +63,13 @@ public class CarController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // External AI driver owns the rigidbody while unoccupied.
+        if (aiControlled && !IsOccupied) return;
+
         Vector3 vel = _rb.linearVelocity;
         float forwardSpeed = Vector3.Dot(vel, transform.forward);
 
-        if (IsOccupied && _hasIntent)
+        if (_hasIntent)
         {
             // Accelerate / brake
             float cap = _throttle >= 0f ? maxSpeed : maxReverse;
@@ -97,5 +104,11 @@ public class CarController : MonoBehaviour
     public Vector3 GetExitPoint()
     {
         return transform.position - transform.right * 2.2f + Vector3.up * 0.5f;
+    }
+
+    /// <summary>Force the current driver (if any) out of the car, e.g. when it explodes.</summary>
+    public void EjectDriver()
+    {
+        if (Driver != null) Driver.ForceExitCar();
     }
 }

@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (_shootHeld && weapon != null)
         {
             Vector3 origin = IsDriving
-                ? _car.transform.position + _car.transform.forward * 2.2f + Vector3.up * 0.6f
+                ? _car.transform.position + _aimDir * 2.4f + Vector3.up * 0.7f
                 : transform.position + transform.forward * 0.7f + Vector3.up * gunHeight;
             Vector3 dir = IsDriving && _aimDir.sqrMagnitude < 0.01f ? _car.transform.forward : _aimDir;
             if (weapon.TryFire(origin, dir, gameObject))
@@ -131,6 +131,7 @@ public class PlayerController : MonoBehaviour
 
         // Aim
         Vector3 aim = _aimDir;
+        Vector3 aimRef = (IsDriving && _car != null) ? _car.transform.position : transform.position;
         bool gamepadAim = false;
         if (gp != null)
         {
@@ -143,9 +144,9 @@ public class PlayerController : MonoBehaviour
         }
         if (!gamepadAim && ms != null && TopDownCameraRig.Instance != null)
         {
-            if (TopDownCameraRig.Instance.ScreenToGround(ms.position.ReadValue(), transform.position.y, out Vector3 wp))
+            if (TopDownCameraRig.Instance.ScreenToGround(ms.position.ReadValue(), aimRef.y, out Vector3 wp))
             {
-                Vector3 d = wp - transform.position;
+                Vector3 d = wp - aimRef;
                 d.y = 0f;
                 if (d.sqrMagnitude > 0.04f) aim = d;
             }
@@ -198,6 +199,19 @@ public class PlayerController : MonoBehaviour
         TopDownCameraRig.Instance?.SetTarget(transform);
         SfxManager.Play("car_stop", 0.6f);
         GameManager.Instance?.ShowBanner("LEFT VEHICLE", 1f);
+    }
+
+    /// <summary>Public hook for a car that is being destroyed under the player.</summary>
+    public void ForceExitCar()
+    {
+        if (_car == null) return;
+        Vector3 exit = _car.GetExitPoint();
+        _car.SetDriver(null);
+        _car = null;
+        SetOnFootBodyEnabled(true);
+        transform.position = exit;
+        _rb.linearVelocity = Vector3.zero;
+        TopDownCameraRig.Instance?.SetTarget(transform);
     }
 
     void SetOnFootBodyEnabled(bool on)

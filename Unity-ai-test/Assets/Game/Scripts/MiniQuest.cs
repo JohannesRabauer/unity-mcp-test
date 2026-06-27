@@ -139,7 +139,7 @@ public class MiniQuest : MonoBehaviour
     {
         _runner = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         _runner.name = "QuestRunner";
-        _runner.transform.position = runnerSpawn;
+        _runner.transform.position = FindClearSpawn(runnerSpawn);
         var rb = _runner.AddComponent<Rigidbody>();
         rb.mass = 60f;
         var health = _runner.AddComponent<Health>();
@@ -159,6 +159,31 @@ public class MiniQuest : MonoBehaviour
 
         _runnerHealth = health;
         _runnerHealth.OnDied += _ => OnRunnerDied();
+    }
+
+    /// <summary>Returns a spawn point that is not embedded inside a building, so
+    /// the runner is always reachable and killable.</summary>
+    Vector3 FindClearSpawn(Vector3 preferred)
+    {
+        if (IsClear(preferred)) return preferred;
+        for (int i = 0; i < 50; i++)
+        {
+            var p = new Vector3(Random.Range(-22f, 22f), 1f, Random.Range(-22f, 22f));
+            if (IsClear(p)) return p;
+        }
+        return new Vector3(0f, 1f, 10f); // open avenue fallback
+    }
+
+    bool IsClear(Vector3 p)
+    {
+        var hits = Physics.OverlapSphere(p + Vector3.up * 0.4f, 1.4f, ~0, QueryTriggerInteraction.Ignore);
+        foreach (var h in hits)
+        {
+            if (h.gameObject.name == "Ground") continue;
+            if (h.GetComponentInParent<PlayerController>() != null) continue;
+            return false;
+        }
+        return true;
     }
 
     GameObject MakeBeacon(Transform parent, Color color, Vector3 localOffset)
