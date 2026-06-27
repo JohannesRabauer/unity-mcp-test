@@ -48,9 +48,16 @@ public class Weapon : MonoBehaviour
             {
                 health.TakeDamage(damage, instigator);
             }
+            FxPop.Spawn(end, new Color(1f, 0.9f, 0.5f), 0.8f, 0.12f, 5f); // impact spark
         }
 
         ShowTracer(origin, end);
+
+        // Muzzle flash + a little kick when the player pulls the trigger.
+        FxPop.Spawn(origin + dir * 0.3f, tracerColor, 0.9f, 0.07f, 6f);
+        var playerGo = PlayerController.Instance != null ? PlayerController.Instance.gameObject : null;
+        if (instigator == playerGo) CameraShake.Shake(0.05f);
+
         return true;
     }
 

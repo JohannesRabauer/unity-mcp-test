@@ -834,8 +834,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -932,7 +934,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.32, g: 0.04, b: 0.18, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.31999996, g: 0.04, b: 0.17999998, a: 1}
     - _EmissionColor: {r: 1.1, g: 0.22000001, b: 0.66, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -952,6 +954,7 @@ GameObject:
   - component: {fileID: 67770029}
   - component: {fileID: 67770028}
   - component: {fileID: 67770027}
+  - component: {fileID: 67770033}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1114,6 +1117,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67770025}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &67770033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67770025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &77078177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1548,6 +1565,7 @@ GameObject:
   - component: {fileID: 104526790}
   - component: {fileID: 104526789}
   - component: {fileID: 104526788}
+  - component: {fileID: 104526794}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -1707,6 +1725,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104526786}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &104526794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104526786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &104995691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,8 +2647,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -2713,7 +2747,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.02, g: 0.05, b: 0.06, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.02, g: 0.049999982, b: 0.059999965, a: 1}
     - _EmissionColor: {r: 0, g: 1.19, b: 1.4, a: 1.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -3969,8 +4003,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -4067,7 +4103,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.06, g: 0.02, b: 0.05, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.059999965, g: 0.02, b: 0.049999982, a: 1}
     - _EmissionColor: {r: 1.4, g: 0.14, b: 0.97999996, a: 1.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -4623,8 +4659,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -4721,7 +4759,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.02, g: 0.02, b: 0.03, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.02, g: 0.02, b: 0.03, a: 1}
     - _EmissionColor: {r: 0.44000003, g: 2.2, b: 1.98, a: 2.2}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -4853,6 +4891,7 @@ GameObject:
   - component: {fileID: 321290184}
   - component: {fileID: 321290183}
   - component: {fileID: 321290182}
+  - component: {fileID: 321290188}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -5012,6 +5051,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321290180}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &321290188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321290180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &329823121
 GameObject:
   m_ObjectHideFlags: 0
@@ -5199,6 +5252,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5340,6 +5394,21 @@ MonoBehaviour:
   height: 38
   followLerp: 8
   lookAhead: 3.5
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddbe3e6705d6a3345894e8e6b6961326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShake
+  maxOffset: 1.4
+  decay: 1.8
+  frequency: 26
 --- !u!1 &369063145
 GameObject:
   m_ObjectHideFlags: 0
@@ -8775,8 +8844,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -8873,7 +8944,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.07, g: 0.13, b: 0.33, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.06999998, g: 0.12999997, b: 0.32999998, a: 1}
     - _EmissionColor: {r: 0.33, g: 0.55, b: 1.1, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -11059,6 +11130,7 @@ GameObject:
   - component: {fileID: 679423445}
   - component: {fileID: 679423444}
   - component: {fileID: 679423443}
+  - component: {fileID: 679423449}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -11218,6 +11290,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679423441}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &679423449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679423441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &692329320
 GameObject:
   m_ObjectHideFlags: 0
@@ -11326,8 +11412,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -11424,7 +11512,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1, g: 0.1, b: 0.14, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.09999997, g: 0.09999997, b: 0.13999996, a: 1}
     - _EmissionColor: {r: 0.075, g: 0.0875, b: 0.15, a: 0.25}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -12045,8 +12133,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -12143,7 +12233,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.17, g: 0.07, b: 0.33, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.16999996, g: 0.06999998, b: 0.32999998, a: 1}
     - _EmissionColor: {r: 0.66, g: 0.33, b: 1.1, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -14215,6 +14305,7 @@ GameObject:
   - component: {fileID: 899548246}
   - component: {fileID: 899548245}
   - component: {fileID: 899548244}
+  - component: {fileID: 899548250}
   m_Layer: 0
   m_Name: Police
   m_TagString: Untagged
@@ -14376,6 +14467,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899548242}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &899548250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899548242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &900067806
 GameObject:
   m_ObjectHideFlags: 0
@@ -14391,6 +14496,7 @@ GameObject:
   - component: {fileID: 900067810}
   - component: {fileID: 900067809}
   - component: {fileID: 900067808}
+  - component: {fileID: 900067814}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -14550,6 +14656,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900067806}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &900067814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900067806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &907694616
 GameObject:
   m_ObjectHideFlags: 0
@@ -17028,8 +17148,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -17126,7 +17248,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.33, g: 0.17, b: 0.04, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.32999998, g: 0.16999996, b: 0.04, a: 1}
     - _EmissionColor: {r: 1.1, g: 0.77, b: 0.165, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -17146,6 +17268,7 @@ GameObject:
   - component: {fileID: 1136909255}
   - component: {fileID: 1136909254}
   - component: {fileID: 1136909253}
+  - component: {fileID: 1136909259}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -17305,6 +17428,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136909251}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1136909259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136909251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &1143263293
 GameObject:
   m_ObjectHideFlags: 0
@@ -17887,8 +18024,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -17985,7 +18124,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.4, g: 0.1, b: 0.3, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.39999998, g: 0.09999997, b: 0.29999998, a: 1}
     - _EmissionColor: {r: 0.15, g: 0.15, b: 0.15, a: 0.15}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -18598,6 +18737,7 @@ GameObject:
   - component: {fileID: 1217379023}
   - component: {fileID: 1217379022}
   - component: {fileID: 1217379021}
+  - component: {fileID: 1217379027}
   m_Layer: 0
   m_Name: Police
   m_TagString: Untagged
@@ -18759,6 +18899,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217379019}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1217379027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217379019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &1221352412
 GameObject:
   m_ObjectHideFlags: 0
@@ -19251,8 +19405,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -19349,7 +19505,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.33, g: 0.17, b: 0.04, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.32999998, g: 0.16999996, b: 0.04, a: 1}
     - _EmissionColor: {r: 1.1, g: 0.77, b: 0.165, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -20442,8 +20598,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -20540,7 +20698,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.33, g: 0.17, b: 0.04, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.32999998, g: 0.16999996, b: 0.04, a: 1}
     - _EmissionColor: {r: 1.1, g: 0.77, b: 0.165, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -20563,8 +20721,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -20661,7 +20821,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.32, g: 0.04, b: 0.18, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.31999996, g: 0.04, b: 0.17999998, a: 1}
     - _EmissionColor: {r: 1.1, g: 0.22000001, b: 0.66, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -20684,8 +20844,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -20782,7 +20944,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1, g: 0.1, b: 0.05, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.09999997, g: 0.09999997, b: 0.049999982, a: 1}
     - _EmissionColor: {r: 3.5, g: 2.9750001, b: 1.4, a: 3.5}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -21007,8 +21169,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -21105,7 +21269,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.3, g: 0.18, b: 0.05, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.29999998, g: 0.17999998, b: 0.049999982, a: 1}
     - _EmissionColor: {r: 0.6, g: 0.33, b: 0.060000002, a: 0.6}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -21927,6 +22091,7 @@ GameObject:
   - component: {fileID: 1500707176}
   - component: {fileID: 1500707175}
   - component: {fileID: 1500707174}
+  - component: {fileID: 1500707180}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -22086,6 +22251,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500707172}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1500707180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500707172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &1530076878
 GameObject:
   m_ObjectHideFlags: 0
@@ -22396,8 +22575,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -22494,7 +22675,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.07, g: 0.13, b: 0.33, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.06999998, g: 0.12999997, b: 0.32999998, a: 1}
     - _EmissionColor: {r: 0.33, g: 0.55, b: 1.1, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -26021,6 +26202,7 @@ GameObject:
   - component: {fileID: 1804182935}
   - component: {fileID: 1804182934}
   - component: {fileID: 1804182933}
+  - component: {fileID: 1804182939}
   m_Layer: 0
   m_Name: Police
   m_TagString: Untagged
@@ -26182,6 +26364,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804182931}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1804182939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804182931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &1813546096
 GameObject:
   m_ObjectHideFlags: 0
@@ -26289,8 +26485,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -26387,7 +26585,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.05, g: 0.05, b: 0.07, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.049999982, g: 0.049999982, b: 0.06999998, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -26410,8 +26608,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -26508,7 +26708,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.05, g: 0.32, b: 0.17, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.049999982, g: 0.31999996, b: 0.16999996, a: 1}
     - _EmissionColor: {r: 0.22000001, g: 1.1, b: 0.55, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -28523,6 +28723,7 @@ GameObject:
   - component: {fileID: 1967122146}
   - component: {fileID: 1967122145}
   - component: {fileID: 1967122144}
+  - component: {fileID: 1967122150}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -28682,6 +28883,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1967122142}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1967122150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967122142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &1975703003
 GameObject:
   m_ObjectHideFlags: 0
@@ -29415,6 +29630,7 @@ GameObject:
   - component: {fileID: 2030724565}
   - component: {fileID: 2030724564}
   - component: {fileID: 2030724563}
+  - component: {fileID: 2030724569}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -29574,6 +29790,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030724561}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2030724569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030724561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a0f8220c113541ac187b7b6a9875a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFx
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.12
 --- !u!1 &2035252156
 GameObject:
   m_ObjectHideFlags: 0

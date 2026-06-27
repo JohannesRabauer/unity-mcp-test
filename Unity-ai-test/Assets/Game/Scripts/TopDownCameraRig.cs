@@ -14,6 +14,7 @@ public class TopDownCameraRig : MonoBehaviour
     public float lookAhead = 3.5f;
 
     Camera _cam;
+    Vector3 _basePos;
 
     void Awake()
     {
@@ -21,6 +22,7 @@ public class TopDownCameraRig : MonoBehaviour
         _cam = GetComponent<Camera>();
         // Straight down.
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        _basePos = transform.position;
     }
 
     public void SetTarget(Transform t)
@@ -38,7 +40,9 @@ public class TopDownCameraRig : MonoBehaviour
 
         Vector3 lead = new Vector3(vel.x, 0f, vel.z).normalized * lookAhead * Mathf.Clamp01(vel.magnitude / 12f);
         Vector3 desired = new Vector3(target.position.x + lead.x, height, target.position.z + lead.z);
-        transform.position = Vector3.Lerp(transform.position, desired, 1f - Mathf.Exp(-followLerp * Time.deltaTime));
+        _basePos = Vector3.Lerp(_basePos, desired, 1f - Mathf.Exp(-followLerp * Time.deltaTime));
+        Vector3 shake = CameraShake.Instance != null ? CameraShake.Instance.Offset : Vector3.zero;
+        transform.position = _basePos + shake;
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
