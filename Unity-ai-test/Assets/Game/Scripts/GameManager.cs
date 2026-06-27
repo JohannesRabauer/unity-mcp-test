@@ -21,6 +21,15 @@ public class GameManager : MonoBehaviour
     public float wantedDecaySeconds = 12f;
     float _wantedTimer;
 
+    [Header("Economy")]
+    public int cash;
+    public int cashPerPickup = 250;
+    public int cashPerBust = 50;
+
+    [Header("Run timer")]
+    public float runTime;
+    public bool timerRunning = true;
+
     [Header("Respawn")]
     public Vector3 respawnPoint = Vector3.zero;
 
@@ -40,10 +49,16 @@ public class GameManager : MonoBehaviour
     public void CollectPickup()
     {
         pickupsCollected++;
+        AddCash(cashPerPickup);
         if (AllCollected)
             ShowBanner("ALL LOOT SECURED - GET TO THE EXTRACTION ZONE", 5f);
         else
-            ShowBanner($"LOOT {pickupsCollected}/{pickupsTotal}", 1.5f);
+            ShowBanner($"LOOT  +${cashPerPickup}", 1.5f);
+    }
+
+    public void AddCash(int amount)
+    {
+        cash = Mathf.Max(0, cash + amount);
     }
 
     public void AddWanted(int amount = 1)
@@ -62,7 +77,10 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState != State.Playing) return;
         CurrentState = State.Won;
-        ShowBanner("MISSION COMPLETE", 999f);
+        timerRunning = false;
+        int bonus = Mathf.Max(0, 5000 - Mathf.FloorToInt(runTime) * 10);
+        AddCash(bonus);
+        ShowBanner($"MISSION COMPLETE  +${bonus} TIME BONUS", 999f);
         Time.timeScale = 0f;
     }
 
@@ -75,6 +93,9 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (_bannerTimer > 0f) _bannerTimer -= Time.unscaledDeltaTime;
+
+        if (timerRunning && CurrentState == State.Playing)
+            runTime += Time.deltaTime;
 
         if (wanted > 0)
         {
@@ -119,6 +140,15 @@ public class GameManager : MonoBehaviour
         string stars = "";
         for (int i = 0; i < 5; i++) stars += i < wanted ? "*" : "-";
         GUI.Label(new Rect(20, 106, 400, 30), $"WANTED  {stars}", _mid);
+
+        // Cash + run time (top-right)
+        var cashStyle = new GUIStyle(_mid) { alignment = TextAnchor.UpperRight };
+        cashStyle.normal.textColor = new Color(0.4f, 1f, 0.5f);
+        GUI.Label(new Rect(Screen.width - 320, 16, 300, 30), $"${cash:N0}", cashStyle);
+        int mins = Mathf.FloorToInt(runTime / 60f);
+        int secs = Mathf.FloorToInt(runTime % 60f);
+        var timeStyle = new GUIStyle(_small) { alignment = TextAnchor.UpperRight };
+        GUI.Label(new Rect(Screen.width - 320, 50, 300, 24), $"TIME  {mins:00}:{secs:00}", timeStyle);
 
         // Controls hint
         GUI.Label(new Rect(20, Screen.height - 30, 900, 24),

@@ -955,6 +955,7 @@ GameObject:
   - component: {fileID: 67770028}
   - component: {fileID: 67770027}
   - component: {fileID: 67770033}
+  - component: {fileID: 67770034}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1131,6 +1132,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageFx
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashTime: 0.12
+--- !u!114 &67770034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67770025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b03ac4b759cea3948b13e544fb6ed175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthRegen
+  delayAfterDamage: 5
+  healPerSecond: 8
 --- !u!1 &77078177
 GameObject:
   m_ObjectHideFlags: 0
@@ -13545,6 +13560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 837013476}
   - component: {fileID: 837013475}
+  - component: {fileID: 837013477}
   m_Layer: 0
   m_Name: =SYSTEMS=
   m_TagString: Untagged
@@ -13569,6 +13585,11 @@ MonoBehaviour:
   pickupsCollected: 0
   wanted: 0
   wantedDecaySeconds: 12
+  cash: 0
+  cashPerPickup: 250
+  cashPerBust: 50
+  runTime: 0
+  timerRunning: 1
   respawnPoint: {x: 6, y: 1, z: 6}
 --- !u!4 &837013476
 Transform:
@@ -13585,6 +13606,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &837013477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837013474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0573bbcfa4420874d8ec401651291d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minimap
+  worldRadius: 70
+  size: 180
+  margin: 16
+  extraction: {x: 40, y: 0.4, z: 40}
+  showExtraction: 1
 --- !u!1 &846522035
 GameObject:
   m_ObjectHideFlags: 0
@@ -14345,6 +14383,8 @@ MonoBehaviour:
   shootRange: 16
   preferredDistance: 9
   activateRadius: 60
+  redeployDelay: 4
+  mapEdge: 54
 --- !u!114 &899548245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18777,6 +18817,8 @@ MonoBehaviour:
   shootRange: 16
   preferredDistance: 9
   activateRadius: 60
+  redeployDelay: 4
+  mapEdge: 54
 --- !u!114 &1217379022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26242,6 +26284,8 @@ MonoBehaviour:
   shootRange: 16
   preferredDistance: 9
   activateRadius: 60
+  redeployDelay: 4
+  mapEdge: 54
 --- !u!114 &1804182934
 MonoBehaviour:
   m_ObjectHideFlags: 0
