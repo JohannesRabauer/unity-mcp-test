@@ -1,0 +1,149 @@
+using UnityEngine;
+
+/// <summary>
+/// Game-wide state: pickups, wanted level, win/lose, respawn, and the on-screen HUD.
+/// Self-wiring singleton so other systems can reach it without serialized references.
+/// </summary>
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance { get; private set; }
+
+    public enum State { Playing, Won, Dead }
+    public State CurrentState = State.Playing;
+
+    [Header("Pickups")]
+    public int pickupsTotal;
+    public int pickupsCollected;
+    public bool AllCollected => pickupsTotal > 0 && pickupsCollected >= pickupsTotal;
+
+    [Header("Wanted")]
+    [Range(0, 5)] public int wanted;
+    public float wantedDecaySeconds = 12f;
+    float _wantedTimer;
+
+    [Header("Respawn")]
+    public Vector3 respawnPoint = Vector3.zero;
+
+    string _banner = "";
+    float _bannerTimer;
+
+    GUIStyle _big, _mid, _small, _shadow;
+    bool _stylesReady;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    public void RegisterPickup() => pickupsTotal++;
+
+    public void CollectPickup()
+    {
+        pickupsCollected++;
+        if (AllCollected)
+            ShowBanner("ALL LOOT SECURED - GET TO THE EXTRACTION ZONE", 5f);
+        else
+            ShowBanner($"LOOT {pickupsCollected}/{pickupsTotal}", 1.5f);
+    }
+
+    public void AddWanted(int amount = 1)
+    {
+        wanted = Mathf.Clamp(wanted + amount, 0, 5);
+        _wantedTimer = wantedDecaySeconds;
+        if (amount > 0) ShowBanner("WANTED LEVEL UP", 1.2f);
+    }
+
+    public void OnPlayerDied()
+    {
+        ShowBanner("BUSTED / WASTED - RESPAWNING", 2.5f);
+    }
+
+    public void Win()
+    {
+        if (CurrentState != State.Playing) return;
+        CurrentState = State.Won;
+        ShowBanner("MISSION COMPLETE", 999f);
+        Time.timeScale = 0f;
+    }
+
+    public void ShowBanner(string text, float seconds)
+    {
+        _banner = text;
+        _bannerTimer = seconds;
+    }
+
+    void Update()
+    {
+        if (_bannerTimer > 0f) _bannerTimer -= Time.unscaledDeltaTime;
+
+        if (wanted > 0)
+        {
+            _wantedTimer -= Time.deltaTime;
+            if (_wantedTimer <= 0f)
+            {
+                wanted--;
+                _wantedTimer = wantedDecaySeconds;
+            }
+        }
+    }
+
+    void EnsureStyles()
+    {
+        if (_stylesReady) return;
+        _big = new GUIStyle { fontSize = 34, fontStyle = FontStyle.Bold };
+        _big.normal.textColor = new Color(0.2f, 1f, 0.9f);
+        _mid = new GUIStyle { fontSize = 22, fontStyle = FontStyle.Bold };
+        _mid.normal.textColor = new Color(1f, 0.85f, 0.2f);
+        _small = new GUIStyle { fontSize = 16, fontStyle = FontStyle.Bold };
+        _small.normal.textColor = Color.white;
+        _shadow = new GUIStyle { fontSize = 34, fontStyle = FontStyle.Bold };
+        _shadow.normal.textColor = new Color(0f, 0f, 0f, 0.6f);
+        _stylesReady = true;
+    }
+
+    void OnGUI()
+    {
+        EnsureStyles();
+
+        // Health
+        var player = PlayerController.Instance;
+        float hp = player != null && player.Health != null ? player.Health.current : 0f;
+        float hpMax = player != null && player.Health != null ? player.Health.maxHealth : 100f;
+        GUI.Label(new Rect(20, 16, 400, 30), $"HEALTH  {Mathf.CeilToInt(hp)}/{Mathf.CeilToInt(hpMax)}", _mid);
+        DrawBar(new Rect(20, 48, 260, 16), hp / Mathf.Max(1f, hpMax), new Color(1f, 0.2f, 0.45f));
+
+        // Loot
+        GUI.Label(new Rect(20, 74, 400, 30), $"LOOT  {pickupsCollected}/{pickupsTotal}", _mid);
+
+        // Wanted stars
+        string stars = "";
+        for (int i = 0; i < 5; i++) stars += i < wanted ? "*" : "-";
+        GUI.Label(new Rect(20, 106, 400, 30), $"WANTED  {stars}", _mid);
+
+        // Controls hint
+        GUI.Label(new Rect(20, Screen.height - 30, 900, 24),
+            "WASD move   Mouse aim   LMB shoot   E enter/exit car   Space handbrake   (gamepad supported)", _small);
+
+        // Banner
+        if (_bannerTimer > 0f && !string.IsNullOrEmpty(_banner))
+        {
+            var r = new Rect(0, Screen.height * 0.34f, Screen.width, 60);
+            var rs = new Rect(2, Screen.height * 0.34f + 2, Screen.width, 60);
+            var center = new GUIStyle(_big) { alignment = TextAnchor.MiddleCenter };
+            var centerS = new GUIStyle(_shadow) { alignment = TextAnchor.MiddleCenter };
+            GUI.Label(rs, _banner, centerS);
+            GUI.Label(r, _banner, center);
+        }
+    }
+
+    void DrawBar(Rect r, float t, Color fill)
+    {
+        t = Mathf.Clamp01(t);
+        var bg = r;
+        GUI.color = new Color(0, 0, 0, 0.5f);
+        GUI.DrawTexture(bg, Texture2D.whiteTexture);
+        GUI.color = fill;
+        GUI.DrawTexture(new Rect(r.x, r.y, r.width * t, r.height), Texture2D.whiteTexture);
+        GUI.color = Color.white;
+    }
+}
