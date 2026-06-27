@@ -32,6 +32,37 @@ public class MiniQuest : MonoBehaviour
     GUIStyle _objStyle, _objShadow;
     bool _stylesReady;
 
+    GUIStyle _guideStyle, _guideShadow;
+    Texture2D _arrowTex;
+
+    public static MiniQuest Instance { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    /// <summary>World position the player should currently head toward, if any.</summary>
+    public Vector3? GuideWorldPos()
+    {
+        switch (_phase)
+        {
+            case Phase.Offered:
+            case Phase.TargetDown:
+                return transform.position;
+            case Phase.Active:
+                return _runner != null ? _runner.transform.position : (Vector3?)null;
+            default:
+                return null;
+        }
+    }
+
+    public Color GuideColor => _phase == Phase.Active
+        ? new Color(1f, 0.22f, 0.28f)
+        : new Color(1f, 0.82f, 0.15f);
+
+    string GuideLabel => _phase == Phase.Active ? "TARGET" : "CONTACT";
+
     void Start()
     {
         BuildContactVisual();
@@ -184,6 +215,9 @@ public class MiniQuest : MonoBehaviour
 
     void OnGUI()
     {
+        EnsureStyles();
+        DrawGuide();
+
         string objective = _phase switch
         {
             Phase.Offered => "CONTRACT: Meet the contact (gold beacon)",
@@ -193,10 +227,138 @@ public class MiniQuest : MonoBehaviour
         };
         if (string.IsNullOrEmpty(objective)) return;
 
-        EnsureStyles();
         var r = new Rect(0, Screen.height * 0.13f, Screen.width, 28);
         var rs = new Rect(1, Screen.height * 0.13f + 1, Screen.width, 28);
         GUI.Label(rs, objective, _objShadow);
         GUI.Label(r, objective, _objStyle);
+    }
+
+    // -------------------------------------------------------------- guidance
+
+    void DrawGuide()
+    {
+        var pos = GuideWorldPos();
+        var cam = Camera.main;
+        var player = PlayerController.Instance;
+        if (pos == null || cam == null || player == null) return;
+
+        EnsureGuideAssets();
+        Color col = GuideColor;
+        Vector3 world = pos.Value + Vector3.up * 2f;
+        Vector3 sp = cam.WorldToScreenPoint(world);
+
+        float w = Screen.width, h = Screen.height;
+        float margin = 56f;
+        Vector2 center = new Vector2(w * 0.5f, h * 0.5f);
+        // Convert to GUI space (origin top-left).
+        Vector2 tp = new Vector2(sp.x, h - sp.y);
+        if (sp.z < 0f) tp = center + (center - tp); // behind camera: mirror
+
+        bool onScreen = sp.z > 0f &&
+                        tp.x >= margin && tp.x <= w - margin &&
+                        tp.y >= margin && tp.y <= h - margin;
+
+        float dist = Vector3.Distance(player.transform.position, pos.Value);
+        string distTxt = Mathf.RoundToInt(dist) + "m";
+
+        if (onScreen)
+        {
+            // Reticle hovering over the target plus a distance readout.
+            float ring = 34f + 6f * Mathf.Sin(Time.time * 6f);
+            GUI.color = col;
+            GUI.DrawTexture(new Rect(tp.x - ring * 0.5f, tp.y - ring * 0.5f, ring, ring), _ringTex, ScaleMode.StretchToFill, true);
+            GUI.color = Color.white;
+            DrawGuideLabel(new Rect(tp.x - 60f, tp.y - ring * 0.5f - 26f, 120f, 22f), GuideLabel + "  " + distTxt, col);
+        }
+        else
+        {
+            // Clamp an arrow to the screen edge, pointing toward the target.
+            Vector2 dir = (tp - center);
+            if (dir.sqrMagnitude < 0.001f) dir = Vector2.up;
+            dir.Normalize();
+            Vector2 edge = ClampToFrame(center, dir, w, h, margin);
+            float angle = Mathf.Atan2(dir.x, -dir.y) * Mathf.Rad2Deg;
+
+            Matrix4x4 m = GUI.matrix;
+            GUIUtility.RotateAroundPivot(angle, edge);
+            GUI.color = col;
+            float a = 40f;
+            GUI.DrawTexture(new Rect(edge.x - a * 0.5f, edge.y - a * 0.5f, a, a), _arrowTex, ScaleMode.StretchToFill, true);
+            GUI.matrix = m;
+            GUI.color = Color.white;
+
+            // Distance label nudged inward from the edge.
+            Vector2 lbl = edge - dir * 34f;
+            DrawGuideLabel(new Rect(lbl.x - 60f, lbl.y - 11f, 120f, 22f), GuideLabel + "  " + distTxt, col);
+        }
+    }
+
+    void DrawGuideLabel(Rect rect, string text, Color col)
+    {
+        var sh = new Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+        _guideStyle.normal.textColor = col;
+        GUI.Label(sh, text, _guideShadow);
+        GUI.Label(rect, text, _guideStyle);
+    }
+
+    Vector2 ClampToFrame(Vector2 center, Vector2 dir, float w, float h, float margin)
+    {
+        float halfW = w * 0.5f - margin;
+        float halfH = h * 0.5f - margin;
+        float scale = Mathf.Min(
+            halfW / Mathf.Max(Mathf.Abs(dir.x), 0.0001f),
+            halfH / Mathf.Max(Mathf.Abs(dir.y), 0.0001f));
+        return center + dir * scale;
+    }
+
+    Texture2D _ringTex;
+
+    void EnsureGuideAssets()
+    {
+        if (_guideStyle == null)
+        {
+            _guideStyle = new GUIStyle { fontSize = 16, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
+            _guideStyle.normal.textColor = Color.white;
+            _guideShadow = new GUIStyle(_guideStyle);
+            _guideShadow.normal.textColor = new Color(0f, 0f, 0f, 0.7f);
+        }
+        if (_arrowTex == null) _arrowTex = BuildArrowTex();
+        if (_ringTex == null) _ringTex = BuildRingTex();
+    }
+
+    static Texture2D BuildArrowTex()
+    {
+        int n = 32;
+        var t = new Texture2D(n, n, TextureFormat.RGBA32, false);
+        for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
+            {
+                // Triangle pointing up: width shrinks from bottom to top.
+                float fy = y / (float)(n - 1);             // 0 bottom .. 1 top
+                float halfWidth = Mathf.Lerp(0.5f, 0.02f, fy);
+                float dx = Mathf.Abs((x / (float)(n - 1)) - 0.5f);
+                bool inside = fy > 0.15f && dx <= halfWidth;
+                t.SetPixel(x, y, inside ? Color.white : new Color(1, 1, 1, 0));
+            }
+        t.Apply();
+        t.wrapMode = TextureWrapMode.Clamp;
+        return t;
+    }
+
+    static Texture2D BuildRingTex()
+    {
+        int n = 48;
+        var t = new Texture2D(n, n, TextureFormat.RGBA32, false);
+        Vector2 c = new Vector2((n - 1) * 0.5f, (n - 1) * 0.5f);
+        for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
+            {
+                float d = Vector2.Distance(new Vector2(x, y), c) / (n * 0.5f);
+                bool ring = d > 0.72f && d < 0.98f;
+                t.SetPixel(x, y, ring ? Color.white : new Color(1, 1, 1, 0));
+            }
+        t.Apply();
+        t.wrapMode = TextureWrapMode.Clamp;
+        return t;
     }
 }

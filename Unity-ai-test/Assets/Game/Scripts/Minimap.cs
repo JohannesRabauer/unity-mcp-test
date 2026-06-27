@@ -64,6 +64,18 @@ public class Minimap : MonoBehaviour
         // Player (always centered).
         DrawCenteredDot(center, new Color(0.3f, 0.9f, 1f), 7f);
 
+        // Active quest target (contact or runner) as a bright pulsing ping.
+        var mq = MiniQuest.Instance;
+        if (mq != null)
+        {
+            var gp = mq.GuideWorldPos();
+            if (gp.HasValue)
+            {
+                float pulse = 6f + 3f * Mathf.Sin(Time.time * 6f);
+                PlotDot(center, origin, gp.Value, mq.GuideColor, pulse);
+            }
+        }
+
         GUI.color = Color.white;
     }
 
