@@ -33,6 +33,7 @@ public class Pickup : MonoBehaviour
         var player = other.GetComponentInParent<PlayerController>();
         if (player == null) return;
         _taken = true;
+        SfxManager.Play("pickup", 0.8f);
         GameManager.Instance?.CollectPickup();
         Destroy(gameObject);
     }

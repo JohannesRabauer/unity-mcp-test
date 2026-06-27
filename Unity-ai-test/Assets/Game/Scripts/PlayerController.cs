@@ -181,6 +181,7 @@ public class PlayerController : MonoBehaviour
         car.SetDriver(this);
         SetOnFootBodyEnabled(false);
         TopDownCameraRig.Instance?.SetTarget(car.transform);
+        SfxManager.Play("car_start", 0.7f);
         GameManager.Instance?.ShowBanner("ENTERED VEHICLE", 1f);
     }
 
@@ -195,6 +196,7 @@ public class PlayerController : MonoBehaviour
         transform.position = exit;
         _rb.linearVelocity = Vector3.zero;
         TopDownCameraRig.Instance?.SetTarget(transform);
+        SfxManager.Play("car_stop", 0.6f);
         GameManager.Instance?.ShowBanner("LEFT VEHICLE", 1f);
     }
 

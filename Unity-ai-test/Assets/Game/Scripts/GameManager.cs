@@ -150,9 +150,25 @@ public class GameManager : MonoBehaviour
         var timeStyle = new GUIStyle(_small) { alignment = TextAnchor.UpperRight };
         GUI.Label(new Rect(Screen.width - 320, 50, 300, 24), $"TIME  {mins:00}:{secs:00}", timeStyle);
 
+        // Weapon + ammo (bottom-right)
+        var wp = player != null ? player.weapon : null;
+        if (wp != null)
+        {
+            var wStyle = new GUIStyle(_mid) { alignment = TextAnchor.LowerRight };
+            wStyle.normal.textColor = new Color(0.85f, 0.95f, 1f);
+            GUI.Label(new Rect(Screen.width - 360, Screen.height - 78, 340, 28), wp.weaponName.ToUpper(), wStyle);
+
+            string ammo = wp.infiniteAmmo ? "INF"
+                : wp.IsReloading ? "RELOADING..."
+                : $"{wp.Magazine} / {wp.Reserve}";
+            var aStyle = new GUIStyle(_small) { alignment = TextAnchor.LowerRight };
+            aStyle.normal.textColor = wp.IsReloading ? new Color(1f, 0.6f, 0.3f) : new Color(0.7f, 1f, 0.8f);
+            GUI.Label(new Rect(Screen.width - 360, Screen.height - 50, 340, 24), ammo, aStyle);
+        }
+
         // Controls hint
         GUI.Label(new Rect(20, Screen.height - 30, 900, 24),
-            "WASD move   Mouse aim   LMB shoot   E enter/exit car   Space handbrake   (gamepad supported)", _small);
+            "WASD move   Mouse aim   LMB shoot   R reload   1-4 / Q swap gun   E car   Space handbrake", _small);
 
         // Banner
         if (_bannerTimer > 0f && !string.IsNullOrEmpty(_banner))

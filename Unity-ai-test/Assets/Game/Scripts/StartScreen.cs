@@ -173,6 +173,7 @@ public class StartScreen : MonoBehaviour
         if (!_open) return;
         _open = false;
         Time.timeScale = 1f;
+        SfxManager.Play("ui", 0.7f);
         if (_canvas != null) _canvas.gameObject.SetActive(false);
     }
 

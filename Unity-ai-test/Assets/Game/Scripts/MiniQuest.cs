@@ -79,6 +79,7 @@ public class MiniQuest : MonoBehaviour
         _phase = Phase.Completed;
         RefreshBeacons();
         GameManager.Instance?.AddCash(reward);
+        SfxManager.Play("quest", 0.8f);
         GameManager.Instance?.ShowBanner($"CONTRACT COMPLETE  +${reward}", 4f);
     }
 
