@@ -1,57 +1,65 @@
 using UnityEngine;
 
 /// <summary>
-/// Lightweight autonomous driver for unoccupied cars. Follows a shared ring-road
-/// loop of waypoints. Instead of fighting the arcade CarController (whose steering
-/// needs speed to turn, which deadlocks at corners), the AI drives the rigidbody
-/// directly: it rotates smoothly toward the next node at any speed and pushes the
-/// car forward at a steady cruise. It yields the instant a player occupies the car
-/// and resumes from the nearest node when they leave.
+/// Lightweight autonomous driver for unoccupied cars. Each car follows its own
+/// rectangular loop laid out on the city's clear street grid (set per car via
+/// <see cref="loopExtent"/> and <see cref="clockwise"/>). Instead of fighting the
+/// arcade CarController (whose steering needs speed to turn, which deadlocks at
+/// corners), the AI drives the rigidbody directly: it rotates smoothly toward the
+/// next node at any speed and pushes the car forward at a steady cruise. It yields
+/// the instant a player occupies the car and resumes from the nearest node when
+/// they leave.
 /// </summary>
 [RequireComponent(typeof(CarController))]
 [RequireComponent(typeof(Rigidbody))]
 public class TrafficAI : MonoBehaviour
 {
-    // Clockwise loop around the clear central core (buildings start near +-14).
-    public static readonly Vector3[] Loop =
-    {
-        new Vector3( 11f, 0f, -11f),
-        new Vector3( 11f, 0f,   0f),
-        new Vector3( 11f, 0f,  11f),
-        new Vector3(  0f, 0f,  11f),
-        new Vector3(-11f, 0f,  11f),
-        new Vector3(-11f, 0f,   0f),
-        new Vector3(-11f, 0f, -11f),
-        new Vector3(  0f, 0f, -11f),
-    };
+    [Tooltip("Half-size of the square street loop this car drives (matches a street ring: 22 = inner, 44 = outer).")]
+    public float loopExtent = 22f;
+    [Tooltip("Direction around the loop (top-down). True drives +Z up the east side.")]
+    public bool clockwise = true;
 
-    public float cruiseSpeed = 9f;    // steady forward speed along the loop
+    public float cruiseSpeed = 10f;   // steady forward speed along the loop
     public float turnRate = 150f;     // deg/sec the car can rotate toward its target
-    public float arriveDist = 4.5f;   // distance at which we advance to the next node
+    public float arriveDist = 5f;     // distance at which we advance to the next node
     public float lookAhead = 5.5f;    // forward clearance check for cars/peds
 
     CarController _car;
     Rigidbody _rb;
+    Vector3[] _route;
     int _idx;
-    float _groundY = 0.5f;
 
     void Awake()
     {
         _car = GetComponent<CarController>();
         _rb = GetComponent<Rigidbody>();
         if (_rb != null) _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        BuildRoute();
+    }
+
+    /// <summary>8 waypoints (4 corners + 4 edge midpoints) on a square of half-size loopExtent.</summary>
+    void BuildRoute()
+    {
+        float e = loopExtent;
+        var cw = new[]
+        {
+            new Vector3( e, 0f, -e), new Vector3( e, 0f, 0f), new Vector3( e, 0f,  e), new Vector3( 0f, 0f,  e),
+            new Vector3(-e, 0f,  e), new Vector3(-e, 0f, 0f), new Vector3(-e, 0f, -e), new Vector3( 0f, 0f, -e),
+        };
+        if (clockwise) { _route = cw; return; }
+        // Counter-clockwise: reverse the order.
+        _route = new Vector3[cw.Length];
+        for (int i = 0; i < cw.Length; i++) _route[i] = cw[cw.Length - 1 - i];
     }
 
     void OnEnable()
     {
+        if (_route == null) BuildRoute();
         _idx = NearestNode();
         if (_car != null) _car.aiControlled = true;
         if (_rb != null)
-        {
-            _groundY = transform.position.y;
             // Flat city: pin to ground height so nothing can shove a car through the floor.
             _rb.constraints |= RigidbodyConstraints.FreezePositionY;
-        }
     }
 
     void OnDisable()
@@ -71,13 +79,13 @@ public class TrafficAI : MonoBehaviour
             _rb.constraints |= RigidbodyConstraints.FreezePositionY;
 
         Vector3 pos = transform.position;
-        Vector3 target = Loop[_idx]; target.y = pos.y;
+        Vector3 target = _route[_idx]; target.y = pos.y;
 
         Vector3 to = target - pos; to.y = 0f;
         if (to.magnitude <= arriveDist)
         {
-            _idx = (_idx + 1) % Loop.Length;
-            target = Loop[_idx]; target.y = pos.y;
+            _idx = (_idx + 1) % _route.Length;
+            target = _route[_idx]; target.y = pos.y;
             to = target - pos; to.y = 0f;
         }
         if (to.sqrMagnitude < 0.0001f) return;
@@ -118,12 +126,12 @@ public class TrafficAI : MonoBehaviour
     {
         int best = 0;
         float bestD = float.MaxValue;
-        for (int i = 0; i < Loop.Length; i++)
+        for (int i = 0; i < _route.Length; i++)
         {
-            float d = (Loop[i] - transform.position).sqrMagnitude;
+            float d = (_route[i] - transform.position).sqrMagnitude;
             if (d < bestD) { bestD = d; best = i; }
         }
         // Aim for the node ahead so the car flows along the loop rather than reversing.
-        return (best + 1) % Loop.Length;
+        return (best + 1) % _route.Length;
     }
 }
