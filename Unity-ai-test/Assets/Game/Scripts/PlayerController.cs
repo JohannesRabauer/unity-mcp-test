@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 7f;
     public float accel = 30f;
 
+    [Header("Jump")]
+    public float jumpSpeed = 7.5f;
+    public float jumpGravity = 24f;
+
     [Header("Combat")]
     public float gunHeight = 0.6f;
     public Weapon weapon;
@@ -34,6 +38,11 @@ public class PlayerController : MonoBehaviour
     bool _shootHeld;
     bool _interactPressed;
     bool _handbrake;
+    bool _jumpQueued;
+    bool _airborne;
+    bool _haveGround;
+    float _groundY;
+    float _vyArc;
     float _respawnTimer;
     bool _dead;
 
@@ -41,6 +50,8 @@ public class PlayerController : MonoBehaviour
     {
         Instance = this;
         _rb = GetComponent<Rigidbody>();
+        // Grounded Y stays frozen (stable footing); the jump temporarily releases it
+        // and drives the vertical arc via direct transform writes.
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
         _col = GetComponent<Collider>();
         _renderers = GetComponentsInChildren<Renderer>();
@@ -93,12 +104,41 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // On-foot movement.
+        // On-foot movement (horizontal handled via velocity; vertical via the jump arc).
         Vector3 target = _moveInput.normalized * moveSpeed;
         Vector3 cur = _rb.linearVelocity;
         Vector3 flat = new Vector3(cur.x, 0f, cur.z);
         Vector3 newVel = Vector3.MoveTowards(flat, target, accel * Time.fixedDeltaTime);
-        _rb.linearVelocity = new Vector3(newVel.x, cur.y, newVel.z);
+
+        // Jumping. Grounded Y is frozen (stable). A jump releases the freeze and the
+        // arc is integrated directly onto the transform so the constraint solver
+        // never clamps it; landing re-freezes Y at the take-off height.
+        if (!_haveGround) { _groundY = transform.position.y; _haveGround = true; }
+        if (!_airborne && _jumpQueued)
+        {
+            _airborne = true;
+            _groundY = transform.position.y;
+            _vyArc = jumpSpeed;
+            _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            SfxManager.Play("jump", 0.6f);
+            FxPop.Spawn(transform.position + Vector3.down * 0.35f, new Color(0.45f, 0.85f, 1f), 1.1f, 0.18f, 3f);
+        }
+        _jumpQueued = false;
+        if (_airborne)
+        {
+            _vyArc -= jumpGravity * Time.fixedDeltaTime;
+            float ny = transform.position.y + _vyArc * Time.fixedDeltaTime;
+            if (_vyArc <= 0f && ny <= _groundY)
+            {
+                ny = _groundY;
+                _airborne = false;
+                _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+                FxPop.Spawn(new Vector3(transform.position.x, _groundY - 0.35f, transform.position.z), new Color(0.7f, 0.7f, 0.8f), 1.2f, 0.16f, 2.5f);
+            }
+            Vector3 hp = transform.position;
+            transform.position = new Vector3(hp.x, ny, hp.z);
+        }
+        _rb.linearVelocity = new Vector3(newVel.x, 0f, newVel.z);
 
         // Face aim direction.
         if (_aimDir.sqrMagnitude > 0.01f)
@@ -157,6 +197,10 @@ public class PlayerController : MonoBehaviour
         _shootHeld = (ms != null && ms.leftButton.isPressed) || (gp != null && gp.rightTrigger.ReadValue() > 0.4f);
         _interactPressed = (kb != null && kb.eKey.wasPressedThisFrame) || (gp != null && gp.buttonSouth.wasPressedThisFrame);
         _handbrake = (kb != null && kb.spaceKey.isPressed) || (gp != null && gp.buttonEast.isPressed);
+
+        // Jump (on foot only): Space on keyboard, North face button on gamepad.
+        bool jumpPressed = (kb != null && kb.spaceKey.wasPressedThisFrame) || (gp != null && gp.buttonNorth.wasPressedThisFrame);
+        if (jumpPressed && !IsDriving) _jumpQueued = true;
     }
 
     void TryEnterCar()
@@ -179,6 +223,7 @@ public class PlayerController : MonoBehaviour
     void EnterCar(CarController car)
     {
         _car = car;
+        ResetAirborne();
         car.SetDriver(this);
         SetOnFootBodyEnabled(false);
         TopDownCameraRig.Instance?.SetTarget(car.transform);
@@ -214,9 +259,16 @@ public class PlayerController : MonoBehaviour
         TopDownCameraRig.Instance?.SetTarget(transform);
     }
 
-    void SetOnFootBodyEnabled(bool on)
+    /// <summary>Cancel any in-air jump state and re-lock the body to the ground plane.</summary>
+    void ResetAirborne()
     {
-        if (_col != null) _col.enabled = on;
+        _airborne = false;
+        _jumpQueued = false;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+    }
+
+    void SetOnFootBodyEnabled(bool on)
+    {        if (_col != null) _col.enabled = on;
         foreach (var r in _renderers) if (r != null) r.enabled = on;
         _rb.isKinematic = !on;
         if (!on) _rb.linearVelocity = Vector3.zero;
@@ -227,6 +279,7 @@ public class PlayerController : MonoBehaviour
         if (_dead) return;
         _dead = true;
         if (IsDriving) ExitCar();
+        ResetAirborne();
         SetOnFootBodyEnabled(true);
         _rb.linearVelocity = Vector3.zero;
         _respawnTimer = 2.5f;
@@ -236,6 +289,8 @@ public class PlayerController : MonoBehaviour
     void Respawn()
     {
         _dead = false;
+        ResetAirborne();
+        _haveGround = false;
         Health.ResetHealth();
         Vector3 p = GameManager.Instance != null ? GameManager.Instance.respawnPoint : Vector3.zero;
         transform.position = p + Vector3.up * 1f;

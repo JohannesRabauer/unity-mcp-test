@@ -1149,6 +1149,7 @@ GameObject:
   - component: {fileID: 19078936}
   - component: {fileID: 19078935}
   - component: {fileID: 19078934}
+  - component: {fileID: 19078937}
   m_Layer: 0
   m_Name: Car_Teal
   m_TagString: Untagged
@@ -1297,6 +1298,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &19078937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19078929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &22643723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,6 +1780,7 @@ GameObject:
   - component: {fileID: 44543628}
   - component: {fileID: 44543627}
   - component: {fileID: 44543626}
+  - component: {fileID: 44543629}
   m_Layer: 0
   m_Name: Car_Purple
   m_TagString: Untagged
@@ -1910,6 +1929,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &44543629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44543621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &44774044
 GameObject:
   m_ObjectHideFlags: 0
@@ -2968,6 +3004,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 7
   accel: 30
+  jumpSpeed: 9
+  jumpGravity: 22
   gunHeight: 0.6
   weapon: {fileID: 1632823515}
   enterRadius: 3.2
@@ -4396,6 +4434,7 @@ GameObject:
   - component: {fileID: 100578816}
   - component: {fileID: 100578815}
   - component: {fileID: 100578814}
+  - component: {fileID: 100578817}
   m_Layer: 0
   m_Name: Car_White
   m_TagString: Untagged
@@ -4544,6 +4583,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &100578817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100578809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &104526786
 GameObject:
   m_ObjectHideFlags: 0
@@ -7894,8 +7950,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -7992,7 +8050,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.22, g: 0.22, b: 0.27, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.21999997, g: 0.21999997, b: 0.26999995, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -8496,8 +8554,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -8594,7 +8654,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.28, g: 0.18, b: 0.1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.27999997, g: 0.17999998, b: 0.09999997, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -8797,8 +8857,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -8895,7 +8957,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.25, g: 0.9, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.24999997, g: 0.9, b: 1, a: 1}
     - _EmissionColor: {r: 0.35, g: 1.26, b: 1.4, a: 1.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -10149,8 +10211,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -10247,7 +10311,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.22000001, g: 0.33, b: 0.55, a: 0.55}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.21999997, g: 0.32999998, b: 0.54999995, a: 0.55}
     - _EmissionColor: {r: 0.14, g: 0.21000001, b: 0.35, a: 0.35}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -10718,6 +10782,7 @@ GameObject:
   - component: {fileID: 298206851}
   - component: {fileID: 298206857}
   - component: {fileID: 298206856}
+  - component: {fileID: 298206858}
   m_Layer: 0
   m_Name: Car_Pink
   m_TagString: Untagged
@@ -10905,6 +10970,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &298206858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298206849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &301989723
 GameObject:
   m_ObjectHideFlags: 0
@@ -11830,6 +11912,7 @@ GameObject:
   - component: {fileID: 327801590}
   - component: {fileID: 327801594}
   - component: {fileID: 327801593}
+  - component: {fileID: 327801595}
   m_Layer: 0
   m_Name: Car_Blue
   m_TagString: Untagged
@@ -11960,6 +12043,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &327801595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327801588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &328850421
 GameObject:
   m_ObjectHideFlags: 0
@@ -13782,8 +13882,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -13880,7 +13982,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.3, g: 0.28, b: 0.24, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.29999998, g: 0.27999997, b: 0.23999995, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -13991,6 +14093,7 @@ GameObject:
   - component: {fileID: 371585626}
   - component: {fileID: 371585632}
   - component: {fileID: 371585631}
+  - component: {fileID: 371585633}
   m_Layer: 0
   m_Name: Car_Red
   m_TagString: Untagged
@@ -14178,6 +14281,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &371585633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371585624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &378336522
 GameObject:
   m_ObjectHideFlags: 0
@@ -21991,8 +22111,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -22089,7 +22211,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.07, g: 0.07, b: 0.085, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.06999998, g: 0.06999998, b: 0.08499997, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -22997,8 +23119,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -23095,7 +23219,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.385, g: 0.165, b: 0.55, a: 0.55}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.38499996, g: 0.16499996, b: 0.54999995, a: 0.55}
     - _EmissionColor: {r: 0.24499999, g: 0.105000004, b: 0.35, a: 0.35}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -23699,8 +23823,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -23797,7 +23923,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.05, g: 0.05, b: 0.065, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.049999982, g: 0.049999982, b: 0.064999975, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -26123,8 +26249,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -26221,7 +26349,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.55, g: 0.11000001, b: 0.33, a: 0.55}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.54999995, g: 0.10999998, b: 0.32999998, a: 0.55}
     - _EmissionColor: {r: 0.35, g: 0.07, b: 0.21000001, a: 0.35}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -26881,8 +27009,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -26979,7 +27109,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.11, g: 0.3, b: 0.14, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.10999996, g: 0.29999998, b: 0.13999996, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -30421,8 +30551,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -30519,7 +30651,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.18, g: 0.16, b: 0.2, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.17999998, g: 0.15999997, b: 0.19999996, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -31079,6 +31211,7 @@ GameObject:
   - component: {fileID: 969667339}
   - component: {fileID: 969667338}
   - component: {fileID: 969667337}
+  - component: {fileID: 969667340}
   m_Layer: 0
   m_Name: Car_Green
   m_TagString: Untagged
@@ -31227,6 +31360,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &969667340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969667332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &971541749
 GameObject:
   m_ObjectHideFlags: 0
@@ -31849,8 +31999,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -31947,7 +32099,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.12, g: 0.42, b: 0.16, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.11999995, g: 0.41999996, b: 0.15999997, a: 1}
     - _EmissionColor: {r: 0.04, g: 0.15, b: 0.06, a: 0.5}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -39264,6 +39416,7 @@ GameObject:
   - component: {fileID: 1250289431}
   - component: {fileID: 1250289437}
   - component: {fileID: 1250289436}
+  - component: {fileID: 1250289438}
   m_Layer: 0
   m_Name: Car_Orange
   m_TagString: Untagged
@@ -39451,6 +39604,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &1250289438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250289429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &1250448632
 GameObject:
   m_ObjectHideFlags: 0
@@ -45283,8 +45453,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -45381,7 +45553,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1, g: 0.4, b: 0.7, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.09999997, g: 0.39999998, b: 0.7, a: 1}
     - _EmissionColor: {r: 0.120000005, g: 0.4, b: 0.71999997, a: 0.8}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -50091,8 +50263,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -50189,7 +50363,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.175, g: 0.63, b: 0.7, a: 0.7}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.17499995, g: 0.63, b: 0.7, a: 0.7}
     - _EmissionColor: {r: 0.275, g: 0.99, b: 1.1, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -50997,8 +51171,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -51095,7 +51271,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.28, g: 0.42000002, b: 0.7, a: 0.7}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.27999997, g: 0.42, b: 0.7, a: 0.7}
     - _EmissionColor: {r: 0.44000003, g: 0.66, b: 1.1, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -51952,8 +52128,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -52050,7 +52228,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1375, g: 0.495, b: 0.55, a: 0.55}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.13749996, g: 0.49499995, b: 0.54999995, a: 0.55}
     - _EmissionColor: {r: 0.0875, g: 0.315, b: 0.35, a: 0.35}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -53058,8 +53236,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -53156,7 +53336,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.21000001, g: 0.7, b: 0.42000002, a: 0.7}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.20999998, g: 0.7, b: 0.42, a: 0.7}
     - _EmissionColor: {r: 0.33, g: 1.1, b: 0.66, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -55133,8 +55313,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -55231,7 +55413,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.165, g: 0.55, b: 0.33, a: 0.55}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.16499996, g: 0.54999995, b: 0.32999998, a: 0.55}
     - _EmissionColor: {r: 0.105000004, g: 0.35, b: 0.21000001, a: 0.35}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -55939,6 +56121,7 @@ GameObject:
   - component: {fileID: 1778958639}
   - component: {fileID: 1778958638}
   - component: {fileID: 1778958637}
+  - component: {fileID: 1778958640}
   m_Layer: 0
   m_Name: Car_Yellow
   m_TagString: Untagged
@@ -56087,6 +56270,23 @@ MonoBehaviour:
   maxHealth: 100
   current: 100
   invulnerable: 0
+--- !u!114 &1778958640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778958632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20095cdf0ea68ce4caca7ac4c54763d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarImpact
+  runOverMinSpeed: 4
+  runOverBaseDamage: 24
+  runOverPerSpeed: 8
+  crashMinSpeed: 8
+  crashSelfPerSpeed: 2.4
 --- !u!1 &1780774690
 GameObject:
   m_ObjectHideFlags: 0
@@ -57154,8 +57354,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -57252,7 +57454,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1, g: 0.1, b: 0.13, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.09999997, g: 0.09999997, b: 0.12999997, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -63581,8 +63783,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -63679,7 +63883,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.7, g: 0.7, b: 0.75, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.7, g: 0.7, b: 0.75, a: 1}
     - _EmissionColor: {r: 0.28, g: 0.28, b: 0.3, a: 0.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -64399,8 +64603,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -64497,7 +64703,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.7, g: 0.14, b: 0.42000002, a: 0.7}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.7, g: 0.13999996, b: 0.42, a: 0.7}
     - _EmissionColor: {r: 1.1, g: 0.22000001, b: 0.66, a: 1.1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

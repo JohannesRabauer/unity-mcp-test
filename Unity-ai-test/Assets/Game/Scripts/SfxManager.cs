@@ -105,6 +105,15 @@ public class SfxManager : MonoBehaviour
             Tone(784f, 0.10f, Wave.Square, 0.002f, 16f, 0.3f),
             Tone(1047f, 0.20f, Wave.Square, 0.002f, 12f, 0.34f)));
         Add("switch", Tone(700f, 0.05f, Wave.Square, 0.001f, 45f, 0.28f, 900f));
+
+        // Movement / impacts
+        Add("jump", Tone(280f, 0.16f, Wave.Sine, 0.001f, 14f, 0.3f, 640f));
+        Add("crash", Mix(
+            Noise(0.20f, 0.001f, 20f, 0.7f, 0.35f),
+            Tone(120f, 0.20f, Wave.Square, 0f, 24f, 0.45f, 55f)));
+        Add("thud", Mix(
+            Noise(0.13f, 0.001f, 28f, 0.6f, 0.2f),
+            Tone(90f, 0.15f, Wave.Sine, 0f, 28f, 0.5f, 48f)));
     }
 
     void Add(string id, float[] samples)
