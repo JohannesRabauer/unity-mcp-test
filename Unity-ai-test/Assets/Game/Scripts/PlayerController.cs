@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     bool _shootHeld;
     bool _interactPressed;
     bool _handbrake;
+    bool _boost;
+    bool _hornPressed;
     bool _jumpQueued;
     bool _airborne;
     bool _haveGround;
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             float throttle = _moveInput.z;
             float steer = _moveInput.x;
-            _car.Drive(throttle, steer, _handbrake);
+            _car.Drive(throttle, steer, _handbrake, _boost);
             return;
         }
 
@@ -197,6 +199,13 @@ public class PlayerController : MonoBehaviour
         _shootHeld = (ms != null && ms.leftButton.isPressed) || (gp != null && gp.rightTrigger.ReadValue() > 0.4f);
         _interactPressed = (kb != null && kb.eKey.wasPressedThisFrame) || (gp != null && gp.buttonSouth.wasPressedThisFrame);
         _handbrake = (kb != null && kb.spaceKey.isPressed) || (gp != null && gp.buttonEast.isPressed);
+
+        // Nitro boost (while driving): Left Shift / gamepad left trigger.
+        _boost = (kb != null && kb.leftShiftKey.isPressed) || (gp != null && gp.leftTrigger.ReadValue() > 0.4f);
+
+        // Horn (while driving): H / gamepad left stick press.
+        _hornPressed = (kb != null && kb.hKey.wasPressedThisFrame) || (gp != null && gp.leftStickButton.wasPressedThisFrame);
+        if (_hornPressed && IsDriving && _car != null) _car.Honk();
 
         // Jump (on foot only): Space on keyboard, North face button on gamepad.
         bool jumpPressed = (kb != null && kb.spaceKey.wasPressedThisFrame) || (gp != null && gp.buttonNorth.wasPressedThisFrame);

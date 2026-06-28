@@ -14,6 +14,12 @@ public class Health : MonoBehaviour
     public event Action<Health> OnDied;
     public event Action<Health, float> OnDamaged;
 
+    /// <summary>Global kill feed: fired whenever any Health dies, with the instigator
+    /// (the GameObject credited with the kill, may be null). Used by the style system.</summary>
+    public static event Action<Health, GameObject> OnAnyDeath;
+
+    GameObject _lastInstigator;
+
     void Awake()
     {
         current = maxHealth;
@@ -28,10 +34,12 @@ public class Health : MonoBehaviour
     {
         if (invulnerable || IsDead) return;
         current = Mathf.Max(0f, current - amount);
+        _lastInstigator = instigator;
         OnDamaged?.Invoke(this, amount);
         if (current <= 0f)
         {
             OnDied?.Invoke(this);
+            OnAnyDeath?.Invoke(this, _lastInstigator);
         }
     }
 }

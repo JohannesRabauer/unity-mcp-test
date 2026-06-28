@@ -18,6 +18,13 @@ public class CarController : MonoBehaviour
     public float grip = 6f;          // higher = stickier
     public float idleDrag = 2.5f;
 
+    [Header("Nitro boost")]
+    public float boostPower = 1.9f;       // engine-power multiplier while boosting
+    public float boostMaxSpeed = 31f;     // raised speed cap while boosting
+
+    [Header("Engine audio")]
+    public float engineVolume = 0.35f;
+
     public PlayerController Driver { get; private set; }
     public bool IsOccupied => Driver != null;
 
@@ -28,7 +35,12 @@ public class CarController : MonoBehaviour
     Rigidbody _rb;
     float _throttle, _steer;
     bool _handbrake;
+    bool _boost;
     bool _hasIntent;
+    float _boostFxTimer;
+
+    AudioSource _engine;
+    static AudioClip _engineClip;
 
     void OnEnable() { if (!All.Contains(this)) All.Add(this); }
     void OnDisable() { All.Remove(this); }
@@ -40,6 +52,68 @@ public class CarController : MonoBehaviour
         _rb.centerOfMass = new Vector3(0f, -0.4f, 0f);
         _rb.linearDamping = 0.4f;
         _rb.angularDamping = 4f;
+
+        SetupEngineAudio();
+    }
+
+    void SetupEngineAudio()
+    {
+        if (_engineClip == null) _engineClip = BuildEngineClip();
+        _engine = gameObject.AddComponent<AudioSource>();
+        _engine.clip = _engineClip;
+        _engine.loop = true;
+        _engine.playOnAwake = false;
+        _engine.spatialBlend = 0f;
+        _engine.volume = 0f;
+        _engine.pitch = 0.6f;
+    }
+
+    static AudioClip BuildEngineClip()
+    {
+        const int sr = 44100;
+        int n = sr / 2; // 0.5s loop
+        var a = new float[n];
+        for (int i = 0; i < n; i++)
+        {
+            float t = (float)i / sr;
+            // Low sawtooth + a fifth, gives a throaty idle hum.
+            float saw = 2f * ((t * 60f) % 1f) - 1f;
+            float saw2 = 2f * ((t * 90f) % 1f) - 1f;
+            a[i] = saw * 0.6f + saw2 * 0.25f;
+        }
+        var clip = AudioClip.Create("EngineHum", n, 1, sr, false);
+        clip.SetData(a, 0);
+        return clip;
+    }
+
+    void Update()
+    {
+        UpdateEngineAudio();
+    }
+
+    void UpdateEngineAudio()
+    {
+        if (_engine == null) return;
+        bool playerDriving = IsOccupied && Driver == PlayerController.Instance;
+        if (!playerDriving)
+        {
+            if (_engine.isPlaying) _engine.Stop();
+            return;
+        }
+        if (!_engine.isPlaying) _engine.Play();
+
+        float speed = _rb.linearVelocity.magnitude;
+        float speedFrac = Mathf.Clamp01(speed / Mathf.Max(1f, maxSpeed));
+        float target = (_boost ? 1.3f : 1f) * (0.55f + speedFrac * 0.9f);
+        _engine.pitch = Mathf.Lerp(_engine.pitch, target, 8f * Time.deltaTime);
+        float volTarget = engineVolume * (0.5f + speedFrac * 0.5f) * (_boost ? 1.25f : 1f);
+        _engine.volume = Mathf.Lerp(_engine.volume, volTarget, 6f * Time.deltaTime);
+    }
+
+    public void Honk()
+    {
+        if (!IsOccupied) return;
+        SfxManager.Play("horn", 0.7f, Random.Range(0.97f, 1.03f));
     }
 
     public void SetDriver(PlayerController driver)
@@ -49,15 +123,17 @@ public class CarController : MonoBehaviour
         {
             _throttle = _steer = 0f;
             _handbrake = false;
+            _boost = false;
         }
     }
 
     /// <summary>Called by the driver each FixedUpdate.</summary>
-    public void Drive(float throttle, float steer, bool handbrake)
+    public void Drive(float throttle, float steer, bool handbrake, bool boost = false)
     {
         _throttle = Mathf.Clamp(throttle, -1f, 1f);
         _steer = Mathf.Clamp(steer, -1f, 1f);
         _handbrake = handbrake;
+        _boost = boost && throttle > 0.05f;
         _hasIntent = true;
     }
 
@@ -71,10 +147,23 @@ public class CarController : MonoBehaviour
 
         if (_hasIntent)
         {
-            // Accelerate / brake
-            float cap = _throttle >= 0f ? maxSpeed : maxReverse;
+            // Accelerate / brake (nitro raises power and the forward speed cap).
+            float power = enginePower * (_boost ? boostPower : 1f);
+            float cap = _throttle >= 0f ? (_boost ? boostMaxSpeed : maxSpeed) : maxReverse;
             if (Mathf.Abs(_throttle) > 0.01f && Mathf.Abs(forwardSpeed) < cap)
-                vel += transform.forward * (_throttle * enginePower * Time.fixedDeltaTime);
+                vel += transform.forward * (_throttle * power * Time.fixedDeltaTime);
+
+            // Nitro exhaust flare behind the car.
+            if (_boost)
+            {
+                _boostFxTimer -= Time.fixedDeltaTime;
+                if (_boostFxTimer <= 0f)
+                {
+                    _boostFxTimer = 0.05f;
+                    FxPop.Spawn(transform.position - transform.forward * 2.2f + Vector3.up * 0.4f,
+                        new Color(0.4f, 0.8f, 1f), 1.1f, 0.18f, 6f);
+                }
+            }
 
             // Steering scales with speed and reverses when backing up
             float speedFactor = Mathf.Clamp(forwardSpeed / 4f, -1f, 1f);

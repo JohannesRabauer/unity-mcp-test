@@ -114,6 +114,12 @@ public class SfxManager : MonoBehaviour
         Add("thud", Mix(
             Noise(0.13f, 0.001f, 28f, 0.6f, 0.2f),
             Tone(90f, 0.15f, Wave.Sine, 0f, 28f, 0.5f, 48f)));
+
+        // Vehicle
+        Add("horn", Mix(
+            Tone(400f, 0.45f, Wave.Square, 0.004f, 1.2f, 0.32f),
+            Tone(505f, 0.45f, Wave.Square, 0.004f, 1.2f, 0.28f)));
+        Add("boost", Tone(220f, 0.35f, Wave.Saw, 0.005f, 4f, 0.32f, 680f));
     }
 
     void Add(string id, float[] samples)

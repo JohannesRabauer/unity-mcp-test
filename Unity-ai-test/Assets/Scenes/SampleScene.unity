@@ -1200,6 +1200,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &19078932
 Rigidbody:
@@ -1831,6 +1834,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &44543624
 Rigidbody:
@@ -4485,6 +4491,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &100578812
 Rigidbody:
@@ -10833,6 +10842,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &298206852
 Rigidbody:
@@ -11963,6 +11975,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &327801591
 Rigidbody:
@@ -14144,6 +14159,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &371585627
 Rigidbody:
@@ -31262,6 +31280,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &969667335
 Rigidbody:
@@ -39467,6 +39488,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &1250289432
 Rigidbody:
@@ -53431,6 +53455,128 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682798447}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1686547650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1686547657}
+  - component: {fileID: 1686547656}
+  - component: {fileID: 1686547655}
+  - component: {fileID: 1686547654}
+  - component: {fileID: 1686547653}
+  - component: {fileID: 1686547652}
+  - component: {fileID: 1686547651}
+  m_Layer: 0
+  m_Name: =ENHANCEMENTS=
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1686547651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083b749cf55b33b4092b955f5c2cc5ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager
+  volume: 0.16
+--- !u!114 &1686547652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53539d30ddfec38459ab2ef215b8cdab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
+--- !u!114 &1686547653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bc70c48c5389747b1ee4c8ff4baaa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenFx
+  lowHealthThreshold: 0.45
+--- !u!114 &1686547654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb9cc0eaa7e62d47b324c63322cbde0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StyleMeter
+  comboWindow: 4
+  baseBonus: 25
+--- !u!114 &1686547655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e3adcbb3800d1479223402a484ae53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoliceDispatcher
+  copsPerStar: 1
+  maxCops: 7
+  spawnInterval: 2.5
+  spawnRing: 34
+--- !u!114 &1686547656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc310639745264e47b51b1edd5126957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldSpawner
+  cityExtent: 44
+  barrelClusters: 9
+  healthPacks: 4
+  ammoCrates: 4
+  extraPedestrians: 16
+--- !u!4 &1686547657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1689481916
 GameObject:
   m_ObjectHideFlags: 0
@@ -56172,6 +56318,9 @@ MonoBehaviour:
   turnSpeed: 150
   grip: 6
   idleDrag: 2.5
+  boostPower: 1.9
+  boostMaxSpeed: 31
+  engineVolume: 0.35
   aiControlled: 0
 --- !u!54 &1778958635
 Rigidbody:
@@ -66896,3 +67045,4 @@ SceneRoots:
   - {fileID: 54686952}
   - {fileID: 1763661491}
   - {fileID: 1776592509}
+  - {fileID: 1686547657}
