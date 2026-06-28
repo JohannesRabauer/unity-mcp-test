@@ -3010,8 +3010,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 7
   accel: 30
-  jumpSpeed: 9
-  jumpGravity: 22
   dashSpeed: 19
   dashDuration: 0.18
   dashCooldown: 0.9
@@ -53483,6 +53481,8 @@ GameObject:
   - component: {fileID: 1686547660}
   - component: {fileID: 1686547659}
   - component: {fileID: 1686547658}
+  - component: {fileID: 1686547662}
+  - component: {fileID: 1686547661}
   m_Layer: 0
   m_Name: =ENHANCEMENTS=
   m_TagString: Untagged
@@ -53617,7 +53617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
   dayLength: 120
-  startPhase: 0.32
+  startPhase: 0.85
 --- !u!114 &1686547660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53635,6 +53635,33 @@ MonoBehaviour:
   carReward: 45
   barrelReward: 15
   defaultReward: 15
+--- !u!114 &1686547661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adfb3ed83768d44587cdd9f3067567c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CyberpunkDresser
+--- !u!114 &1686547662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb23735aacbae914798cb0dade703592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldBounds
+  extent: 50
+  height: 10
+  thickness: 2
 --- !u!1 &1689481916
 GameObject:
   m_ObjectHideFlags: 0

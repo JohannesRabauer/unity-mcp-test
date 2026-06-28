@@ -15,10 +15,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 7f;
     public float accel = 30f;
 
-    [Header("Jump")]
-    public float jumpSpeed = 7.5f;
-    public float jumpGravity = 24f;
-
     [Header("Dodge roll")]
     public float dashSpeed = 19f;
     public float dashDuration = 0.18f;
@@ -46,15 +42,10 @@ public class PlayerController : MonoBehaviour
     bool _handbrake;
     bool _boost;
     bool _hornPressed;
-    bool _jumpQueued;
-    bool _airborne;
     bool _dashQueued;
     Vector3 _dashDir;
     float _dashTimer;
     float _dashCdTimer;
-    bool _haveGround;
-    float _groundY;
-    float _vyArc;
     float _respawnTimer;
     bool _dead;
 
@@ -94,8 +85,10 @@ public class PlayerController : MonoBehaviour
         if (_shootHeld && weapon != null)
         {
             Vector3 origin = IsDriving
-                ? _car.transform.position + _aimDir * 2.4f + Vector3.up * 0.7f
-                : transform.position + transform.forward * 0.7f + Vector3.up * gunHeight;
+                ? _car.transform.position + _aimDir * 2.4f
+                : transform.position + transform.forward * 0.7f;
+            // Fire low enough to intersect short vehicles as well as pedestrians.
+            origin.y = (IsDriving ? _car.transform.position.y : transform.position.y) - 0.4f;
             Vector3 dir = IsDriving && _aimDir.sqrMagnitude < 0.01f ? _car.transform.forward : _aimDir;
             if (weapon.TryFire(origin, dir, gameObject))
             {
@@ -125,7 +118,7 @@ public class PlayerController : MonoBehaviour
         // Dodge roll: a quick burst with brief invulnerability.
         if (_dashCdTimer > 0f) _dashCdTimer -= Time.fixedDeltaTime;
         if (_dashTimer > 0f) _dashTimer -= Time.fixedDeltaTime;
-        if (_dashQueued && _dashCdTimer <= 0f && !_airborne)
+        if (_dashQueued && _dashCdTimer <= 0f)
         {
             Vector3 dd = _moveInput.sqrMagnitude > 0.01f ? _moveInput : _aimDir;
             dd.y = 0f;
@@ -142,34 +135,6 @@ public class PlayerController : MonoBehaviour
         if (dashing)
             FxPop.Spawn(transform.position + Vector3.up * 0.2f, new Color(0.5f, 0.9f, 1f), 1.1f, 0.16f, 4f);
 
-        // Jumping. Grounded Y is frozen (stable). A jump releases the freeze and the
-        // arc is integrated directly onto the transform so the constraint solver
-        // never clamps it; landing re-freezes Y at the take-off height.
-        if (!_haveGround) { _groundY = transform.position.y; _haveGround = true; }
-        if (!_airborne && _jumpQueued)
-        {
-            _airborne = true;
-            _groundY = transform.position.y;
-            _vyArc = jumpSpeed;
-            _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            SfxManager.Play("jump", 0.6f);
-            FxPop.Spawn(transform.position + Vector3.down * 0.35f, new Color(0.45f, 0.85f, 1f), 1.1f, 0.18f, 3f);
-        }
-        _jumpQueued = false;
-        if (_airborne)
-        {
-            _vyArc -= jumpGravity * Time.fixedDeltaTime;
-            float ny = transform.position.y + _vyArc * Time.fixedDeltaTime;
-            if (_vyArc <= 0f && ny <= _groundY)
-            {
-                ny = _groundY;
-                _airborne = false;
-                _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
-                FxPop.Spawn(new Vector3(transform.position.x, _groundY - 0.35f, transform.position.z), new Color(0.7f, 0.7f, 0.8f), 1.2f, 0.16f, 2.5f);
-            }
-            Vector3 hp = transform.position;
-            transform.position = new Vector3(hp.x, ny, hp.z);
-        }
         Vector3 horiz = dashing ? _dashDir * dashSpeed : newVel;
         _rb.linearVelocity = new Vector3(horiz.x, 0f, horiz.z);
 
@@ -238,13 +203,9 @@ public class PlayerController : MonoBehaviour
         _hornPressed = (kb != null && kb.hKey.wasPressedThisFrame) || (gp != null && gp.leftStickButton.wasPressedThisFrame);
         if (_hornPressed && IsDriving && _car != null) _car.Honk();
 
-        // Jump (on foot only): Space on keyboard, North face button on gamepad.
-        bool jumpPressed = (kb != null && kb.spaceKey.wasPressedThisFrame) || (gp != null && gp.buttonNorth.wasPressedThisFrame);
-        if (jumpPressed && !IsDriving) _jumpQueued = true;
-
-        // Dodge roll (on foot only): Ctrl on keyboard, East face button on gamepad.
-        bool dashPressed = (kb != null && (kb.leftCtrlKey.wasPressedThisFrame || kb.rightCtrlKey.wasPressedThisFrame))
-            || (gp != null && gp.buttonEast.wasPressedThisFrame);
+        // Dodge roll (on foot only): Space or Ctrl on keyboard, North/East on gamepad.
+        bool dashPressed = (kb != null && (kb.spaceKey.wasPressedThisFrame || kb.leftCtrlKey.wasPressedThisFrame || kb.rightCtrlKey.wasPressedThisFrame))
+            || (gp != null && (gp.buttonNorth.wasPressedThisFrame || gp.buttonEast.wasPressedThisFrame));
         if (dashPressed && !IsDriving) _dashQueued = true;
     }
 
@@ -309,11 +270,13 @@ public class PlayerController : MonoBehaviour
         TopDownCameraRig.Instance?.SetTarget(transform);
     }
 
-    /// <summary>Cancel any in-air jump state and re-lock the body to the ground plane.</summary>
+    /// <summary>Cancel any in-progress dodge roll and re-lock the body to the ground plane.</summary>
     void ResetAirborne()
     {
-        _airborne = false;
-        _jumpQueued = false;
+        _dashQueued = false;
+        _dashTimer = 0f;
+        CancelInvoke(nameof(EndDashInvuln));
+        if (Health != null) Health.invulnerable = false;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
     }
 
@@ -340,7 +303,6 @@ public class PlayerController : MonoBehaviour
     {
         _dead = false;
         ResetAirborne();
-        _haveGround = false;
         Health.ResetHealth();
         Vector3 p = GameManager.Instance != null ? GameManager.Instance.respawnPoint : Vector3.zero;
         transform.position = p + Vector3.up * 1f;
