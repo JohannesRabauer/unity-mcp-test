@@ -31,6 +31,15 @@ public class Weapon : MonoBehaviour
     [Header("Tracer")]
     public float tracerTime = 0.04f;
 
+    /// <summary>Fired after any successful shot: (muzzle origin, instigator). Used by crowds to panic.</summary>
+    public static event System.Action<Vector3, GameObject> OnFired;
+
+    /// <summary>Global damage scaler (e.g. Rampage powerup). Applied to every hit.</summary>
+    public static float DamageMultiplier = 1f;
+
+    /// <summary>When true the player's gun never consumes ammo (Rampage powerup).</summary>
+    public static bool ForceInfinite = false;
+
     float _nextFire;
     int _mag;
     bool _reloading;
@@ -73,7 +82,9 @@ public class Weapon : MonoBehaviour
 
         bool isPlayer = PlayerController.Instance != null && instigator == PlayerController.Instance.gameObject;
 
-        if (!infiniteAmmo && _mag <= 0)
+        bool freeAmmo = infiniteAmmo || (isPlayer && ForceInfinite);
+
+        if (!freeAmmo && _mag <= 0)
         {
             if (autoReload && reserveAmmo > 0) StartReload();
             else if (isPlayer) SfxManager.Play("dry", 0.6f);
@@ -82,7 +93,7 @@ public class Weapon : MonoBehaviour
         }
 
         _nextFire = Time.time + 1f / Mathf.Max(0.01f, fireRate);
-        if (!infiniteAmmo) _mag--;
+        if (!freeAmmo) _mag--;
 
         dir.y = 0f;
         dir.Normalize();
@@ -96,6 +107,8 @@ public class Weapon : MonoBehaviour
         }
 
         ShowTracer(origin, lastEnd);
+
+        OnFired?.Invoke(origin, instigator);
 
         // Muzzle flash + kick.
         FxPop.Spawn(origin + dir * 0.3f, tracerColor, 0.9f, 0.07f, 6f);
@@ -122,7 +135,7 @@ public class Weapon : MonoBehaviour
             if (health != null && health.gameObject != instigator)
             {
                 bool wasAlive = !health.IsDead;
-                health.TakeDamage(damage, instigator);
+                health.TakeDamage(damage * DamageMultiplier, instigator);
                 if (wasAlive && health.IsDead) SfxManager.Play("explosion", 0.7f, Random.Range(0.9f, 1.1f));
                 else SfxManager.Play("hit", 0.5f, Random.Range(0.95f, 1.1f));
             }

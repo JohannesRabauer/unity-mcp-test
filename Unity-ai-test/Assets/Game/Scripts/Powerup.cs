@@ -8,10 +8,11 @@ using UnityEngine;
 /// </summary>
 public class Powerup : MonoBehaviour
 {
-    public enum Kind { Health, Ammo }
+    public enum Kind { Health, Ammo, Rampage }
     public Kind kind = Kind.Health;
     public float healAmount = 45f;
     public int ammoAmount = 120;
+    public float rampageSeconds = 8f;
     public float respawnSeconds = 20f;
 
     float _baseY;
@@ -21,7 +22,8 @@ public class Powerup : MonoBehaviour
 
     public static Powerup Spawn(Vector3 pos, Kind kind)
     {
-        var go = new GameObject(kind == Kind.Health ? "HealthPack" : "AmmoCrate");
+        string n = kind == Kind.Health ? "HealthPack" : kind == Kind.Ammo ? "AmmoCrate" : "RampageOrb";
+        var go = new GameObject(n);
         go.transform.position = pos;
         var p = go.AddComponent<Powerup>();
         p.kind = kind;
@@ -37,8 +39,10 @@ public class Powerup : MonoBehaviour
 
     void Build()
     {
-        Color col = kind == Kind.Health ? new Color(0.3f, 1f, 0.45f) : new Color(0.35f, 0.7f, 1f);
-        var mat = NeonFactory.Lit_(col, col, 2.6f, 0.5f);
+        Color col = kind == Kind.Health ? new Color(0.3f, 1f, 0.45f)
+                  : kind == Kind.Ammo ? new Color(0.35f, 0.7f, 1f)
+                  : new Color(1f, 0.5f, 0.15f);
+        var mat = NeonFactory.Lit_(col, col, kind == Kind.Rampage ? 3.4f : 2.6f, 0.5f);
 
         var box = GameObject.CreatePrimitive(PrimitiveType.Cube);
         box.name = "Core";
@@ -58,10 +62,24 @@ public class Powerup : MonoBehaviour
             MakeMark(new Vector3(0f, 0.6f, 0f), new Vector3(0.5f, 0.16f, 0.16f), markMat);
             MakeMark(new Vector3(0f, 0.6f, 0f), new Vector3(0.16f, 0.5f, 0.16f), markMat);
         }
-        else
+        else if (kind == Kind.Ammo)
         {
             MakeMark(new Vector3(-0.13f, 0.6f, 0f), new Vector3(0.12f, 0.42f, 0.12f), markMat);
             MakeMark(new Vector3(0.13f, 0.6f, 0f), new Vector3(0.12f, 0.42f, 0.12f), markMat);
+        }
+        else // Rampage: a bright star burst.
+        {
+            var starMat = NeonFactory.Lit_(new Color(1f, 0.75f, 0.3f), new Color(1f, 0.75f, 0.3f), 3.6f, 0.5f);
+            MakeMark(new Vector3(0f, 0.6f, 0f), new Vector3(0.55f, 0.12f, 0.12f), starMat);
+            MakeMark(new Vector3(0f, 0.6f, 0f), new Vector3(0.12f, 0.55f, 0.12f), starMat);
+            var diag = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            diag.transform.SetParent(transform, false);
+            diag.transform.localPosition = new Vector3(0f, 0.6f, -0.42f);
+            diag.transform.localScale = new Vector3(0.5f, 0.12f, 0.12f);
+            diag.transform.localEulerAngles = new Vector3(0f, 0f, 45f);
+            diag.GetComponent<Renderer>().sharedMaterial = starMat;
+            var dc = diag.GetComponent<Collider>();
+            if (dc != null) Destroy(dc);
         }
 
         // Trigger volume.
@@ -110,7 +128,7 @@ public class Powerup : MonoBehaviour
                 used = true;
             }
         }
-        else
+        else if (kind == Kind.Ammo)
         {
             var wp = player.weapon;
             if (wp != null && !wp.infiniteAmmo)
@@ -120,11 +138,18 @@ public class Powerup : MonoBehaviour
                 used = true;
             }
         }
+        else // Rampage
+        {
+            RampageBuff.Activate(rampageSeconds);
+            used = true;
+        }
 
         if (!used) return;
         SfxManager.Play("pickup", 0.8f, kind == Kind.Health ? 1.1f : 0.85f);
-        FxPop.Spawn(transform.position + Vector3.up * 0.6f,
-            kind == Kind.Health ? new Color(0.3f, 1f, 0.45f) : new Color(0.35f, 0.7f, 1f), 1.4f, 0.25f, 4f);
+        Color fx = kind == Kind.Health ? new Color(0.3f, 1f, 0.45f)
+                 : kind == Kind.Ammo ? new Color(0.35f, 0.7f, 1f)
+                 : new Color(1f, 0.5f, 0.15f);
+        FxPop.Spawn(transform.position + Vector3.up * 0.6f, fx, 1.4f, 0.25f, 4f);
         StartCooldown();
     }
 

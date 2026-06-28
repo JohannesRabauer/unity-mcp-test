@@ -34,6 +34,18 @@ public class MusicManager : MonoBehaviour
         _src.Play();
     }
 
+    void Update()
+    {
+        if (_src == null) return;
+        int wanted = GameManager.Instance != null ? GameManager.Instance.wanted : 0;
+        float t = Mathf.Clamp01(wanted / 5f);
+        // Heat raises the mix and tightens the tempo for a chase feel.
+        float targetVol = volume * Mathf.Lerp(1f, 1.7f, t);
+        float targetPitch = Mathf.Lerp(1f, 1.2f, t);
+        _src.volume = Mathf.MoveTowards(_src.volume, targetVol, Time.deltaTime * 0.3f);
+        _src.pitch = Mathf.MoveTowards(_src.pitch, targetPitch, Time.deltaTime * 0.5f);
+    }
+
     AudioClip BuildTrack()
     {
         float chordDur = 2f;

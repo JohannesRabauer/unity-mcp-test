@@ -11,6 +11,7 @@ public class PedestrianAI : MonoBehaviour
     public float walkSpeed = 2.4f;
     public float fleeSpeed = 5.5f;
     public float roamRadius = 12f;
+    public float gunfirePanicRange = 16f;
 
     Rigidbody _rb;
     Health _health;
@@ -29,6 +30,19 @@ public class PedestrianAI : MonoBehaviour
         _health.OnDied += _ => Die();
         _home = transform.position;
         PickNewTarget();
+    }
+
+    void OnEnable() => Weapon.OnFired += OnGunfire;
+    void OnDisable() => Weapon.OnFired -= OnGunfire;
+
+    void OnGunfire(Vector3 origin, GameObject instigator)
+    {
+        if (_dead) return;
+        // Only the player's gun spooks the crowd (cops firing is background noise).
+        var player = PlayerController.Instance;
+        if (player == null || instigator != player.gameObject) return;
+        if ((transform.position - origin).sqrMagnitude <= gunfirePanicRange * gunfirePanicRange)
+            _fleeTimer = Mathf.Max(_fleeTimer, 2.5f);
     }
 
     void FixedUpdate()

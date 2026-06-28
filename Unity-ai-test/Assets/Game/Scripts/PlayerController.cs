@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 7.5f;
     public float jumpGravity = 24f;
 
+    [Header("Dodge roll")]
+    public float dashSpeed = 19f;
+    public float dashDuration = 0.18f;
+    public float dashCooldown = 0.9f;
+    public float dashInvuln = 0.3f;
+
     [Header("Combat")]
     public float gunHeight = 0.6f;
     public Weapon weapon;
@@ -42,6 +48,10 @@ public class PlayerController : MonoBehaviour
     bool _hornPressed;
     bool _jumpQueued;
     bool _airborne;
+    bool _dashQueued;
+    Vector3 _dashDir;
+    float _dashTimer;
+    float _dashCdTimer;
     bool _haveGround;
     float _groundY;
     float _vyArc;
@@ -112,6 +122,26 @@ public class PlayerController : MonoBehaviour
         Vector3 flat = new Vector3(cur.x, 0f, cur.z);
         Vector3 newVel = Vector3.MoveTowards(flat, target, accel * Time.fixedDeltaTime);
 
+        // Dodge roll: a quick burst with brief invulnerability.
+        if (_dashCdTimer > 0f) _dashCdTimer -= Time.fixedDeltaTime;
+        if (_dashTimer > 0f) _dashTimer -= Time.fixedDeltaTime;
+        if (_dashQueued && _dashCdTimer <= 0f && !_airborne)
+        {
+            Vector3 dd = _moveInput.sqrMagnitude > 0.01f ? _moveInput : _aimDir;
+            dd.y = 0f;
+            _dashDir = dd.sqrMagnitude > 0.01f ? dd.normalized : transform.forward;
+            _dashTimer = dashDuration;
+            _dashCdTimer = dashCooldown;
+            if (Health != null) Health.invulnerable = true;
+            CancelInvoke(nameof(EndDashInvuln));
+            Invoke(nameof(EndDashInvuln), dashInvuln);
+            SfxManager.Play("dash", 0.6f);
+        }
+        _dashQueued = false;
+        bool dashing = _dashTimer > 0f;
+        if (dashing)
+            FxPop.Spawn(transform.position + Vector3.up * 0.2f, new Color(0.5f, 0.9f, 1f), 1.1f, 0.16f, 4f);
+
         // Jumping. Grounded Y is frozen (stable). A jump releases the freeze and the
         // arc is integrated directly onto the transform so the constraint solver
         // never clamps it; landing re-freezes Y at the take-off height.
@@ -140,7 +170,8 @@ public class PlayerController : MonoBehaviour
             Vector3 hp = transform.position;
             transform.position = new Vector3(hp.x, ny, hp.z);
         }
-        _rb.linearVelocity = new Vector3(newVel.x, 0f, newVel.z);
+        Vector3 horiz = dashing ? _dashDir * dashSpeed : newVel;
+        _rb.linearVelocity = new Vector3(horiz.x, 0f, horiz.z);
 
         // Face aim direction.
         if (_aimDir.sqrMagnitude > 0.01f)
@@ -210,6 +241,16 @@ public class PlayerController : MonoBehaviour
         // Jump (on foot only): Space on keyboard, North face button on gamepad.
         bool jumpPressed = (kb != null && kb.spaceKey.wasPressedThisFrame) || (gp != null && gp.buttonNorth.wasPressedThisFrame);
         if (jumpPressed && !IsDriving) _jumpQueued = true;
+
+        // Dodge roll (on foot only): Ctrl on keyboard, East face button on gamepad.
+        bool dashPressed = (kb != null && (kb.leftCtrlKey.wasPressedThisFrame || kb.rightCtrlKey.wasPressedThisFrame))
+            || (gp != null && gp.buttonEast.wasPressedThisFrame);
+        if (dashPressed && !IsDriving) _dashQueued = true;
+    }
+
+    void EndDashInvuln()
+    {
+        if (Health != null) Health.invulnerable = false;
     }
 
     void TryEnterCar()

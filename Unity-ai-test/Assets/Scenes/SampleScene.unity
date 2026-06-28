@@ -3012,6 +3012,10 @@ MonoBehaviour:
   accel: 30
   jumpSpeed: 9
   jumpGravity: 22
+  dashSpeed: 19
+  dashDuration: 0.18
+  dashCooldown: 0.9
+  dashInvuln: 0.3
   gunHeight: 0.6
   weapon: {fileID: 1632823515}
   enterRadius: 3.2
@@ -4664,6 +4668,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &104526789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11684,6 +11689,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &321290183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23508,6 +23514,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &679423444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29540,6 +29547,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &900067809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36745,6 +36753,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &1136909254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46860,6 +46869,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &1500707175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53470,6 +53480,9 @@ GameObject:
   - component: {fileID: 1686547653}
   - component: {fileID: 1686547652}
   - component: {fileID: 1686547651}
+  - component: {fileID: 1686547660}
+  - component: {fileID: 1686547659}
+  - component: {fileID: 1686547658}
   m_Layer: 0
   m_Name: =ENHANCEMENTS=
   m_TagString: Untagged
@@ -53561,6 +53574,7 @@ MonoBehaviour:
   barrelClusters: 9
   healthPacks: 4
   ammoCrates: 4
+  rampageOrbs: 2
   extraPedestrians: 16
 --- !u!4 &1686547657
 Transform:
@@ -53577,6 +53591,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686547658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129b005b63ebb2545a202ffdb66b8852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleFxRigger
+  rescanInterval: 4
+--- !u!114 &1686547659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcddcb1876dd61f459e73680a51292a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
+  dayLength: 120
+  startPhase: 0.32
+--- !u!114 &1686547660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686547650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8247ad9c600789a4f872f471c18422e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  pedReward: 20
+  copReward: 60
+  carReward: 45
+  barrelReward: 15
+  defaultReward: 15
 --- !u!1 &1689481916
 GameObject:
   m_ObjectHideFlags: 0
@@ -62475,6 +62533,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &1967122145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63688,6 +63747,7 @@ MonoBehaviour:
   walkSpeed: 2.4
   fleeSpeed: 5.5
   roamRadius: 7
+  gunfirePanicRange: 16
 --- !u!114 &2030724564
 MonoBehaviour:
   m_ObjectHideFlags: 0

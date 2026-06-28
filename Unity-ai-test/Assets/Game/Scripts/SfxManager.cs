@@ -120,6 +120,15 @@ public class SfxManager : MonoBehaviour
             Tone(400f, 0.45f, Wave.Square, 0.004f, 1.2f, 0.32f),
             Tone(505f, 0.45f, Wave.Square, 0.004f, 1.2f, 0.28f)));
         Add("boost", Tone(220f, 0.35f, Wave.Saw, 0.005f, 4f, 0.32f, 680f));
+
+        // Pickups / abilities
+        Add("coin", Concat(
+            Tone(880f, 0.05f, Wave.Square, 0.001f, 26f, 0.3f),
+            Tone(1320f, 0.09f, Wave.Square, 0.001f, 18f, 0.32f)));
+        Add("rampage", Mix(
+            Tone(160f, 0.5f, Wave.Saw, 0.005f, 3f, 0.32f, 480f),
+            Tone(240f, 0.5f, Wave.Square, 0.01f, 3f, 0.2f, 720f)));
+        Add("dash", Noise(0.18f, 0.004f, 14f, 0.5f, 0.55f));
     }
 
     void Add(string id, float[] samples)

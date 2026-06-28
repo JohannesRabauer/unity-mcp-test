@@ -16,6 +16,7 @@ public class WorldSpawner : MonoBehaviour
     [Header("Powerups")]
     public int healthPacks = 4;
     public int ammoCrates = 4;
+    public int rampageOrbs = 2;
 
     [Header("Crowd")]
     public int extraPedestrians = 16;
@@ -62,6 +63,11 @@ public class WorldSpawner : MonoBehaviour
         {
             var p = RandomClearPoint(1.2f);
             if (p != Vector3.zero) Powerup.Spawn(p, Powerup.Kind.Ammo);
+        }
+        for (int i = 0; i < rampageOrbs; i++)
+        {
+            var p = RandomClearPoint(1.2f);
+            if (p != Vector3.zero) Powerup.Spawn(p, Powerup.Kind.Rampage);
         }
     }
 

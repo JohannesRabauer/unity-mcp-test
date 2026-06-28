@@ -49,6 +49,19 @@ public class Minimap : MonoBehaviour
         foreach (var p in Object.FindObjectsByType<Pickup>(FindObjectsSortMode.None))
             PlotDot(center, origin, p.transform.position, new Color(1f, 0.85f, 0.2f), 5f);
 
+        // Powerups (health/ammo/rampage crates).
+        foreach (var pu in Object.FindObjectsByType<Powerup>(FindObjectsSortMode.None))
+        {
+            Color pc = pu.kind == Powerup.Kind.Health ? new Color(0.3f, 1f, 0.45f)
+                     : pu.kind == Powerup.Kind.Ammo ? new Color(0.35f, 0.7f, 1f)
+                     : new Color(1f, 0.5f, 0.15f);
+            PlotDot(center, origin, pu.transform.position, pc, 4f);
+        }
+
+        // Explosive barrels (hazards).
+        foreach (var b in Object.FindObjectsByType<ExplosiveBarrel>(FindObjectsSortMode.None))
+            PlotDot(center, origin, b.transform.position, new Color(1f, 0.55f, 0.15f), 3f);
+
         // Police (only the live ones with renderers enabled).
         var gm = GameManager.Instance;
         if (gm != null && gm.wanted > 0)

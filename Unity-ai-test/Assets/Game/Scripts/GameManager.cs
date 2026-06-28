@@ -167,8 +167,8 @@ public class GameManager : MonoBehaviour
         }
 
         // Controls hint
-        GUI.Label(new Rect(20, Screen.height - 30, 900, 24),
-            "WASD move   Mouse aim   LMB shoot   R reload   1-4 / Q swap gun   E car   Space handbrake", _small);
+        GUI.Label(new Rect(20, Screen.height - 30, 1100, 24),
+            "WASD move   Mouse aim   LMB shoot   R reload   1-4/Q gun   Space jump   Ctrl roll   E car   Shift nitro   H horn   Esc pause", _small);
 
         // Banner
         if (_bannerTimer > 0f && !string.IsNullOrEmpty(_banner))
